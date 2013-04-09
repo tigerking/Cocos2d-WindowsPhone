@@ -19,7 +19,7 @@
 #include "pch.h"
 
 //#include "CCDirector.h"
-#include <ppltasks.h>
+//#include <ppltasks.h>
 
 #include "CCCommon.h"
 #include "CCString.h"
@@ -32,6 +32,7 @@
 #include <mfapi.h>
 //#include <mfreadwrite.h>
 #include <mfmediaengine.h>
+
 
 using namespace Windows::Storage;
 using namespace Windows::ApplicationModel;

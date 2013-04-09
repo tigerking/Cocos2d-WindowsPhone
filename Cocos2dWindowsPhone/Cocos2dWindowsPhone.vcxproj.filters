@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resources">
-      <UniqueIdentifier>5fd0e509-b6ae-4f29-bd2a-4d2cc10f3aa0</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="actions">
       <UniqueIdentifier>{b5498426-282d-4602-80bd-d3d1e5221e0e}</UniqueIdentifier>
     </Filter>
@@ -127,6 +123,16 @@
     </Filter>
     <Filter Include="include\kazmath\GL">
       <UniqueIdentifier>{193bf721-c6c2-47c5-bf29-2128e316e2e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes">
+      <UniqueIdentifier>{376a857e-36dd-404a-b6f6-7adf3015f247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>5fd0e509-b6ae-4f29-bd2a-4d2cc10f3aa0</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Assets\Tiles">
+      <UniqueIdentifier>{db0ae67a-4921-48a3-9b0e-019868494ce3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -490,6 +496,16 @@
     <ClCompile Include="kazmath\src\GL\matrix.c">
       <Filter>kazmath\src\GL</Filter>
     </ClCompile>
+    <ClCompile Include="PhoneDirect3DXamlApp1Component.cpp" />
+    <ClCompile Include="Direct3DContentProvider.cpp" />
+    <ClCompile Include="Classes\AppDelegate.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\HelloWorldScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeRenderer.cpp" />
+    <ClCompile Include="Direct3DBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include=".\cocoa\CCNS.h">
@@ -842,6 +858,16 @@
     <ClInclude Include="include\kazmath\GL\matrix.h">
       <Filter>include\kazmath\GL</Filter>
     </ClInclude>
+    <ClInclude Include="PhoneDirect3DXamlApp1Component.h" />
+    <ClInclude Include="Direct3DContentProvider.h" />
+    <ClInclude Include="Classes\AppDelegate.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\HelloWorldScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeRenderer.h" />
+    <ClInclude Include="Direct3DBase.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include=".\shaders\CCDrawingPixelShader.hlsl">
@@ -892,6 +918,12 @@
     <FxCompile Include=".\shaders\CCTextureAtlasVertexShader.hlsl">
       <Filter>shaders</Filter>
     </FxCompile>
+    <FxCompile Include="shaders\SimplePixelShader.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="shaders\SimpleVertexShader.hlsl">
+      <Filter>shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="kazmath\src\ChangeLog">
@@ -902,5 +934,40 @@
     <Text Include="kazmath\src\CMakeLists.txt">
       <Filter>kazmath\src</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Tiles\FlipCycleTileLarge.png">
+      <Filter>Assets\Tiles</Filter>
+    </Image>
+    <Image Include="Assets\Tiles\FlipCycleTileMedium.png">
+      <Filter>Assets\Tiles</Filter>
+    </Image>
+    <Image Include="Assets\Tiles\FlipCycleTileSmall.png">
+      <Filter>Assets\Tiles</Filter>
+    </Image>
+    <Image Include="Assets\Tiles\IconicTileMediumLarge.png">
+      <Filter>Assets\Tiles</Filter>
+    </Image>
+    <Image Include="Assets\Tiles\IconicTileSmall.png">
+      <Filter>Assets\Tiles</Filter>
+    </Image>
+    <Image Include="Assets\ApplicationIcon.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\HelloWorld.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Logo.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SmallLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
 </Project>

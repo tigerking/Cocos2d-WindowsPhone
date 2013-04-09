@@ -280,9 +280,16 @@
     <ClCompile Include=".\tileMap_parallax_nodes\CCTMXXMLParser.cpp" />
     <ClCompile Include=".\touch_dispatcher\CCTouchDispatcher.cpp" />
     <ClCompile Include=".\touch_dispatcher\CCTouchHandler.cpp" />
+    <ClCompile Include="Classes\AppDelegate.cpp" />
+    <ClCompile Include="Classes\HelloWorldScene.cpp" />
     <ClCompile Include="cocoa\CCArray.cpp" />
     <ClCompile Include="cocoa\CCDictionary.cpp" />
     <ClCompile Include="cocoa\CCString.cpp" />
+    <ClCompile Include="CubeRenderer.cpp" />
+    <ClCompile Include="Direct3DBase.cpp" />
+    <ClCompile Include="Direct3DContentProvider.cpp">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
     <ClCompile Include="kazmath\src\aabb.c">
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsWinRT>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -412,6 +419,9 @@
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsWinRT>
     </ClCompile>
     <ClCompile Include="particle_nodes\CCParticleBatchNode.cpp" />
+    <ClCompile Include="PhoneDirect3DXamlApp1Component.cpp">
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
     <ClCompile Include="touch_dispatcher\CCTouch.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -515,6 +525,13 @@
     <ClInclude Include=".\support\zip_support\unzip.h" />
     <ClInclude Include=".\support\zip_support\ZipUtils.h" />
     <ClInclude Include=".\targetver.h" />
+    <ClInclude Include="Classes\AppDelegate.h" />
+    <ClInclude Include="Classes\HelloWorldScene.h" />
+    <ClInclude Include="CubeRenderer.h" />
+    <ClInclude Include="Direct3DBase.h" />
+    <ClInclude Include="Direct3DContentProvider.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
     <ClInclude Include="include\CCApplication_win8_metro.h" />
     <ClInclude Include="include\CCFileUtils.h" />
     <ClInclude Include="include\CCMenu.h" />
@@ -533,6 +550,9 @@
     <ClInclude Include="include\kazmath\vec2.h" />
     <ClInclude Include="include\kazmath\vec3.h" />
     <ClInclude Include="include\kazmath\vec4.h" />
+    <ClInclude Include="PhoneDirect3DXamlApp1Component.h">
+      <DeploymentContent>true</DeploymentContent>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include=".\shaders\CCDrawingPixelShader.hlsl">
@@ -583,12 +603,37 @@
     <FxCompile Include=".\shaders\CCTextureAtlasVertexShader.hlsl">
       <ShaderType>Vertex</ShaderType>
     </FxCompile>
+    <FxCompile Include="shaders\SimplePixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="shaders\SimpleVertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="kazmath\src\ChangeLog" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="kazmath\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\ApplicationIcon.png" />
+    <Image Include="Assets\HelloWorld.png" />
+    <Image Include="Assets\Logo.png" />
+    <Image Include="Assets\SmallLogo.png" />
+    <Image Include="Assets\SplashScreen.png" />
+    <Image Include="Assets\StoreLogo.png" />
+    <Image Include="Assets\Tiles\FlipCycleTileLarge.png" />
+    <Image Include="Assets\Tiles\FlipCycleTileMedium.png" />
+    <Image Include="Assets\Tiles\FlipCycleTileSmall.png" />
+    <Image Include="Assets\Tiles\IconicTileMediumLarge.png" />
+    <Image Include="Assets\Tiles\IconicTileSmall.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsPhone\v$(TargetPlatformVersion)\Microsoft.Cpp.WindowsPhone.$(TargetPlatformVersion).targets" />

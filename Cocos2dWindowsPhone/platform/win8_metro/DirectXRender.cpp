@@ -63,42 +63,46 @@ DirectXRender::DirectXRender()
 {
 	s_pDXRender = this;
 }
-
-// Initialize the Direct3D resources required to run.
-void DirectXRender::Initialize(CoreWindow^ window, float dpi)
+void DirectXRender::Initialize(_In_ ID3D11Device1* device)
 {
-	m_window = window;
-	m_windowClosed = false;
-	m_textPainter = ref new TextPainter();
-
-	window->Closed += 
-		ref new TypedEventHandler<CoreWindow^, CoreWindowEventArgs^>(this, &DirectXRender::OnWindowClosed);
-
-	window->VisibilityChanged +=
-		ref new TypedEventHandler<CoreWindow^, VisibilityChangedEventArgs^>(this, &DirectXRender::OnWindowVisibilityChanged);
-
-	window->SizeChanged += 
-		ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &DirectXRender::OnWindowSizeChanged);
-
-	window->PointerPressed += 
-		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &DirectXRender::OnPointerPressed);
-
-	window->PointerReleased +=
-		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &DirectXRender::OnPointerReleased);
-
-	window->PointerMoved +=
-		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &DirectXRender::OnPointerMoved);
-
-	window->CharacterReceived += 
-		ref new TypedEventHandler<CoreWindow^, CharacterReceivedEventArgs^>(this, &DirectXRender::OnCharacterReceived);
-	 
-	CreateDeviceIndependentResources();
+	m_d3dDevice = device;
 	CreateDeviceResources();
-	SetDpi(dpi);
-	SetRasterState();
-	//Render();
-	//Present();
 }
+// Initialize the Direct3D resources required to run.
+//void DirectXRender::Initialize(CoreWindow^ window, float dpi)
+//{
+//	m_window = window;
+//	m_windowClosed = false;
+//	m_textPainter = ref new TextPainter();
+//
+//	window->Closed += 
+//		ref new TypedEventHandler<CoreWindow^, CoreWindowEventArgs^>(this, &DirectXRender::OnWindowClosed);
+//
+//	window->VisibilityChanged +=
+//		ref new TypedEventHandler<CoreWindow^, VisibilityChangedEventArgs^>(this, &DirectXRender::OnWindowVisibilityChanged);
+//
+//	window->SizeChanged += 
+//		ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &DirectXRender::OnWindowSizeChanged);
+//
+//	window->PointerPressed += 
+//		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &DirectXRender::OnPointerPressed);
+//
+//	window->PointerReleased +=
+//		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &DirectXRender::OnPointerReleased);
+//
+//	window->PointerMoved +=
+//		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &DirectXRender::OnPointerMoved);
+//
+//	window->CharacterReceived += 
+//		ref new TypedEventHandler<CoreWindow^, CharacterReceivedEventArgs^>(this, &DirectXRender::OnCharacterReceived);
+//	 
+//	CreateDeviceIndependentResources();
+//	CreateDeviceResources();
+//	SetDpi(dpi);
+//	SetRasterState();
+//	//Render();
+//	//Present();
+//}
 
 // These are the resources required independent of hardware.
 
@@ -513,37 +517,83 @@ void DirectXRender::CreateWindowSizeDependentResources()
 // Method to call cocos2d's main loop for game update and draw.
 void DirectXRender::Render()
 {
-#if WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP
-#else
-	//int r = 255;
-	//int g = 255;
-	//int b = 255;
-	////int r = rand() % 255;
-	////int g = rand() % 255;
-	////int b = rand() % 255;
-	//const float color[] = { r/255.0f, g/255.0f, b/255.0f, 1.000f };
-	//   m_d3dContext->ClearRenderTargetView(
-	//       m_renderTargetView.Get(),
-	//       color
-	//       );
-	//b2Body* DXRBox = HelloWorld::getBox();
-	//b2Vec2 position = DXRBox->GetPosition();
-	//float width = 20.0/160.0;
-	//float height = 20.0/160.0;
-	//CCPoint box[] = { ccp((position.x - width)*160.0, (position.y - height)*160.0), ccp((position.x - width)*160.0, (position.y + height)*160.0),
-	//				  ccp((position.x + width)*160.0, (position.y + height)*160.0), ccp((position.x + width)*160.0, (position.y - height)*160.0)};
-	//ccDrawPoly(box,4,true,true);
-	//ccDrawLine(ccp(0,100),ccp(480,100));
-	////CCSize winSize = CCDirector::sharedDirector()->getWinSize();
-	////CCSprite *player = CCSprite::create("Player.png", CCRectMake(0, 0, 27, 40) );
-	////player->setPosition( ccp(150, 150) );
-	////player->draw();
-	////HelloWorld::schedule(schedule_selector(HelloWorld::gameLogic), 1.0));
-	////CCLabelTTF* pLabel = CCLabelTTF::create("Hello World", "Arial", 24);
-	////pLabel->setPosition(ccp(200,200));
-	////b2Body* temp = HelloWorld::getBody();
-	////Direct3DBase::DrawRect(100.0f, 100.0f, 1.0f, 1.0f,  DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
-#endif 
+	m_d3dContext->OMSetRenderTargets(
+		1,
+		m_renderTargetView.GetAddressOf(),
+		m_depthStencilView.Get()
+		);
+
+	const float midnightBlue[] = { 0.098f, 0.098f, 0.439f, 1.000f };
+	m_d3dContext->ClearRenderTargetView(
+		m_renderTargetView.Get(),
+		midnightBlue
+		);
+
+	m_d3dContext->ClearDepthStencilView(
+		m_depthStencilView.Get(),
+		D3D11_CLEAR_DEPTH,
+		1.0f,
+		0
+		);
+
+	// 仅在加载时绘制多维数据集(加载为异步过程)。
+	if (!m_loadingComplete)
+	{
+		return;
+	}
+
+	m_d3dContext->UpdateSubresource(
+		m_constantBuffer.Get(),
+		0,
+		NULL,
+		&m_constantBufferData,
+		0,
+		0
+		);
+
+	UINT stride = sizeof(VertexPositionColor);
+	UINT offset = 0;
+	m_d3dContext->IASetVertexBuffers(
+		0,
+		1,
+		m_vertexBuffer.GetAddressOf(),
+		&stride,
+		&offset
+		);
+
+	m_d3dContext->IASetIndexBuffer(
+		m_indexBuffer.Get(),
+		DXGI_FORMAT_R16_UINT,
+		0
+		);
+
+	m_d3dContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	m_d3dContext->IASetInputLayout(m_inputLayout.Get());
+
+	m_d3dContext->VSSetShader(
+		m_vertexShader.Get(),
+		nullptr,
+		0
+		);
+
+	m_d3dContext->VSSetConstantBuffers(
+		0,
+		1,
+		m_constantBuffer.GetAddressOf()
+		);
+
+	m_d3dContext->PSSetShader(
+		m_pixelShader.Get(),
+		nullptr,
+		0
+		);
+
+	m_d3dContext->DrawIndexed(
+		m_indexCount,
+		0,
+		0
+		);
 }
 
 // Method to deliver the final image to the display.
@@ -564,7 +614,7 @@ void DirectXRender::Present()
 	// must completely reinitialize the renderer.
 	if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
 	{
-		Initialize(m_window.Get(), m_dpi);
+//		Initialize(m_window.Get(), m_dpi);
 	}
 	else
 	{
@@ -697,4 +747,54 @@ void DirectXRender::OnCharacterReceived(
 	)
 {
 	cocos2d::CCEGLView::sharedOpenGLView()->OnCharacterReceived(args->KeyCode);
+}
+//// 以下是依赖设备的资源。
+//void DirectXRender::CreateDeviceResources()
+//{
+//}
+
+void DirectXRender::UpdateDevice(_In_ ID3D11Device1* device, _In_ ID3D11DeviceContext1* context, _In_ ID3D11RenderTargetView* renderTargetView)
+{
+	m_d3dContext = context;
+	m_renderTargetView = renderTargetView;
+
+	if (m_d3dDevice.Get() != device)
+	{
+		m_d3dDevice = device;
+		CreateDeviceResources();
+
+		// Force call to CreateWindowSizeDependentResources.
+		m_renderTargetSize.Width  = -1;
+		m_renderTargetSize.Height = -1;
+	}
+
+	ComPtr<ID3D11Resource> renderTargetViewResource;
+	m_renderTargetView->GetResource(&renderTargetViewResource);
+
+	ComPtr<ID3D11Texture2D> backBuffer;
+	DX::ThrowIfFailed(
+		renderTargetViewResource.As(&backBuffer)
+		);
+
+	// 在我们的帮助程序类中缓存呈现目标维度以方便使用。
+    D3D11_TEXTURE2D_DESC backBufferDesc;
+    backBuffer->GetDesc(&backBufferDesc);
+
+    if (m_renderTargetSize.Width  != static_cast<float>(backBufferDesc.Width) ||
+        m_renderTargetSize.Height != static_cast<float>(backBufferDesc.Height))
+    {
+        m_renderTargetSize.Width  = static_cast<float>(backBufferDesc.Width);
+        m_renderTargetSize.Height = static_cast<float>(backBufferDesc.Height);
+        CreateWindowSizeDependentResources();
+    }
+
+	// 设置用于确定整个窗口的呈现视区。
+	CD3D11_VIEWPORT viewport(
+		0.0f,
+		0.0f,
+		m_renderTargetSize.Width,
+		m_renderTargetSize.Height
+		);
+
+	m_d3dContext->RSSetViewports(1, &viewport);
 }

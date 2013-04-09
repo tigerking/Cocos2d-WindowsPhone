@@ -8,7 +8,7 @@ using namespace Microsoft::WRL;
 using namespace Windows::Phone::Graphics::Interop;
 using namespace Windows::Phone::Input::Interop;
 
-namespace PhoneDirect3DXamlAppComponent
+namespace cocos2d
 {
 
 Direct3DBackground::Direct3DBackground() :
@@ -20,7 +20,6 @@ IDrawingSurfaceBackgroundContentProvider^ Direct3DBackground::CreateContentProvi
 {
 	ComPtr<Direct3DContentProvider> provider = Make<Direct3DContentProvider>(this);
 	return reinterpret_cast<IDrawingSurfaceBackgroundContentProvider^>(provider.Detach());
-
 }
 
 // IDrawingSurfaceManipulationHandler
@@ -55,9 +54,10 @@ void Direct3DBackground::OnPointerReleased(DrawingSurfaceManipulationHost^ sende
 // 与 Direct3DContentProvider 交互
 HRESULT Direct3DBackground::Connect(_In_ IDrawingSurfaceRuntimeHostNative* host, _In_ ID3D11Device1* device)
 {
-	m_renderer = ref new CubeRenderer();
+	m_renderer = ref new cocos2d::DirectXRender();
 	m_renderer->Initialize(device);
-	m_renderer->UpdateForWindowSizeChange(WindowBounds.Width, WindowBounds.Height);
+//	m_renderer->UpdateForWindowSizeChange(WindowBounds.Width, WindowBounds.Height);
+	m_renderer->UpdateForWindowSizeChange();
 
 	// 在呈现器完成初始化后重新启动计时器。
 	m_timer->Reset();
@@ -72,8 +72,8 @@ void Direct3DBackground::Disconnect()
 
 HRESULT Direct3DBackground::PrepareResources(_In_ const LARGE_INTEGER* presentTargetTime, _Inout_ DrawingSurfaceSizeF* desiredRenderTargetSize)
 {
-	m_timer->Update();
-	m_renderer->Update(m_timer->Total, m_timer->Delta);
+	//m_timer->Update();
+	//m_renderer->Update(m_timer->Total, m_timer->Delta);
 
 	desiredRenderTargetSize->width = RenderResolution.Width;
 	desiredRenderTargetSize->height = RenderResolution.Height;

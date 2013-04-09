@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Direct3DContentProvider.h"
 
-using namespace PhoneDirect3DXamlAppComponent;
+using namespace cocos2d;
 
 Direct3DContentProvider::Direct3DContentProvider(Direct3DBackground^ controller) :
 	m_controller(controller)

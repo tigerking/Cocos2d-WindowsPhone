@@ -25,42 +25,36 @@
 
 namespace DX
 {
-    inline void ThrowIfFailed(HRESULT hr)
-    {
-        if (FAILED(hr))
-        {
-            // Set a breakpoint on this line to catch DirectX API errors
-            throw Platform::Exception::CreateException(hr);
-        }
-    }
+	inline void ThrowIfFailed(HRESULT hr)
+	{
+		if (FAILED(hr))
+		{
+			// 在此行中设置断点，以捕获 Win32 API 错误。
+			throw Platform::Exception::CreateException(hr);
+		}
+	}
 
-    struct ByteArray { Platform::Array<byte>^ data; };
-
-    // function that reads from a binary file asynchronously
-    inline Concurrency::task<ByteArray> ReadDataAsync(Platform::String^ filename)
-    {
-        using namespace Windows::Storage;
-        using namespace Concurrency;
-
-        auto folder = Windows::ApplicationModel::Package::Current->InstalledLocation;
-
-        task<StorageFile^> getFileTask(folder->GetFileAsync(filename));
-
-        // Create a local to allow the DataReader to be passed between lambdas.
-        auto reader = std::make_shared<Streams::DataReader^>(nullptr);
-        return getFileTask.then([](StorageFile^ file)
-        {
-            return file->OpenReadAsync();
-        }).then([reader](Streams::IRandomAccessStreamWithContentType^ stream)
-        {
-            *reader = ref new Streams::DataReader(stream);
-            return (*reader)->LoadAsync(static_cast<uint32>(stream->Size));
-        }).then([reader](uint32 count)
-        {
-            auto a = ref new Platform::Array<byte>(count);
-            (*reader)->ReadBytes(a);
-            ByteArray ba = { a };
-            return ba;
-        });
-    }
+	// 从二进制文件中执行异步读取操作的函数。
+	inline Concurrency::task<Platform::Array<byte>^> ReadDataAsync(Platform::String^ filename)
+	{
+		using namespace Windows::Storage;
+		using namespace Concurrency;
+		
+		auto folder = Windows::ApplicationModel::Package::Current->InstalledLocation;
+		
+		return create_task(folder->GetFileAsync(filename)).then([] (StorageFile^ file) 
+		{
+			return file->OpenReadAsync();
+		}).then([] (Streams::IRandomAccessStreamWithContentType^ stream)
+		{
+			unsigned int bufferSize = static_cast<unsigned int>(stream->Size);
+			auto fileBuffer = ref new Streams::Buffer(bufferSize);
+			return stream->ReadAsync(fileBuffer, bufferSize, Streams::InputStreamOptions::None);
+		}).then([] (Streams::IBuffer^ fileBuffer) -> Platform::Array<byte>^ 
+		{
+			auto fileData = ref new Platform::Array<byte>(fileBuffer->Length);
+			Streams::DataReader::FromBuffer(fileBuffer)->ReadBytes(fileData);
+			return fileData;
+		});
+	}
 }

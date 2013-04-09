@@ -2,8 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2012 for Windows Phone
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneDirect3DXamlApp1", "PhoneDirect3DXamlApp1\PhoneDirect3DXamlApp1.csproj", "{6DEF931A-E247-4D1B-93AE-514909DDE151}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8C939C76-A430-450E-9607-56CEC95DEE2F} = {8C939C76-A430-450E-9607-56CEC95DEE2F}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PhoneDirect3DXamlApp1Component", "PhoneDirect3DXamlApp1Component\PhoneDirect3DXamlApp1Component.vcxproj", "{D7EC1D2D-2079-497B-A888-6D92B7C6514E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cocos2dWindowsPhone", "Cocos2dWindowsPhone\Cocos2dWindowsPhone.vcxproj", "{8C939C76-A430-450E-9607-56CEC95DEE2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,24 +52,24 @@ Global
 		{6DEF931A-E247-4D1B-93AE-514909DDE151}.Release|x86.ActiveCfg = Release|x86
 		{6DEF931A-E247-4D1B-93AE-514909DDE151}.Release|x86.Build.0 = Release|x86
 		{6DEF931A-E247-4D1B-93AE-514909DDE151}.Release|x86.Deploy.0 = Release|x86
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Debug|ARM.ActiveCfg = Debug|ARM
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Debug|ARM.Build.0 = Debug|ARM
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Debug|Win32.Build.0 = Debug|Win32
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Debug|x86.ActiveCfg = Debug|Win32
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Debug|x86.Build.0 = Debug|Win32
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Release|Any CPU.ActiveCfg = Release|Win32
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Release|ARM.ActiveCfg = Release|ARM
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Release|ARM.Build.0 = Release|ARM
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Release|Win32.ActiveCfg = Release|Win32
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Release|Win32.Build.0 = Release|Win32
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Release|x86.ActiveCfg = Release|Win32
-		{D7EC1D2D-2079-497B-A888-6D92B7C6514E}.Release|x86.Build.0 = Release|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Debug|ARM.ActiveCfg = Debug|ARM
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Debug|ARM.Build.0 = Debug|ARM
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Debug|Win32.Build.0 = Debug|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Debug|x86.ActiveCfg = Debug|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Debug|x86.Build.0 = Debug|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Release|Any CPU.ActiveCfg = Release|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Release|ARM.ActiveCfg = Release|ARM
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Release|ARM.Build.0 = Release|ARM
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Release|Win32.ActiveCfg = Release|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Release|Win32.Build.0 = Release|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Release|x86.ActiveCfg = Release|Win32
+		{8C939C76-A430-450E-9607-56CEC95DEE2F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

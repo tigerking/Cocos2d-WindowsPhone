@@ -39,7 +39,17 @@
 // forward declare
 
 NS_CC_BEGIN;
-
+struct ModelViewProjectionConstantBuffer
+{
+	DirectX::XMFLOAT4X4 model;
+	DirectX::XMFLOAT4X4 view;
+	DirectX::XMFLOAT4X4 projection;
+};
+struct VertexPositionColor
+{
+	DirectX::XMFLOAT3 pos;
+	DirectX::XMFLOAT3 color;
+};
 class CCEGLView;
 class CCImage;
 
@@ -49,7 +59,7 @@ public ref class DirectXRender sealed
 public:
 	DirectXRender();
 
-	void Initialize(Windows::UI::Core::CoreWindow^ window, float dpi);
+	//void Initialize(Windows::UI::Core::CoreWindow^ window, float dpi);
 	void CreateDeviceIndependentResources();
 	void CreateDeviceResources();
 	void SetDpi(float dpi);
@@ -62,9 +72,25 @@ public:
 	bool GetWindowsClosedState();
 	static DirectXRender^ SharedDXRender();
 
+	// 更新时间相关对象的方法。
+	//void Update(float timeTotal, float timeDelta);
+internal:
+	virtual void Initialize(_In_ ID3D11Device1* device);
+	//virtual void CreateDeviceResources();
+	virtual void UpdateDevice(_In_ ID3D11Device1* device, _In_ ID3D11DeviceContext1* context, _In_ ID3D11RenderTargetView* renderTargetView);
 private:
 	Platform::Agile<Windows::UI::Core::CoreWindow>                  m_window;
+	bool m_loadingComplete;
 
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_vertexBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_indexBuffer;
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_vertexShader;
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_constantBuffer;
+
+	uint32 m_indexCount;
+	ModelViewProjectionConstantBuffer m_constantBufferData;
 private:
 	bool SetRasterState();
 

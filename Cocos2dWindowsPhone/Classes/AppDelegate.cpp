@@ -48,25 +48,25 @@ bool AppDelegate::initInstance()
 	//mainView->Create();
 	//mainView->setDesignResolution(480, 320);
 	//mainView->setDesignResolution(640, 1066);
-	CCLOG("Device Res:%d", m_deviceResolutionInPixels);
-	switch (m_deviceResolutionInPixels) 
-	{
-	case DeviceResolutionInPixels_WVGA: 
-		{
-			mainView->setDesignResolution(480, 800);
-			break;
-		}
-	case DeviceResolutionInPixels_720p: 
-		{
-			mainView->setDesignResolution(720, 1280);
-			break;
-		}	
-	case DeviceResolutionInPixels_WXGA: 
-		{
-			mainView->setDesignResolution(768, 1280);
-			break;
-		}
-	}
+	//CCLOG("Device Res:%d", m_deviceResolutionInPixels);
+	//switch (m_deviceResolutionInPixels) 
+	//{
+	//case DeviceResolutionInPixels_WVGA: 
+	//	{
+	//		mainView->setDesignResolution(480, 800);
+	//		break;
+	//	}
+	//case DeviceResolutionInPixels_720p: 
+	//	{
+	//		mainView->setDesignResolution(720, 1280);
+	//		break;
+	//	}	
+	//case DeviceResolutionInPixels_WXGA: 
+	//	{
+	//		mainView->setDesignResolution(768, 1280);
+	//		break;
+	//	}
+	//}
 	
 
 #endif // CC_PLATFORM_WIN8_METRO
