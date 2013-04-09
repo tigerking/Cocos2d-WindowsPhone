@@ -285,7 +285,6 @@
     <ClCompile Include="cocoa\CCArray.cpp" />
     <ClCompile Include="cocoa\CCDictionary.cpp" />
     <ClCompile Include="cocoa\CCString.cpp" />
-    <ClCompile Include="CubeRenderer.cpp" />
     <ClCompile Include="Direct3DBase.cpp" />
     <ClCompile Include="Direct3DContentProvider.cpp">
       <DeploymentContent>true</DeploymentContent>
@@ -527,7 +526,6 @@
     <ClInclude Include=".\targetver.h" />
     <ClInclude Include="Classes\AppDelegate.h" />
     <ClInclude Include="Classes\HelloWorldScene.h" />
-    <ClInclude Include="CubeRenderer.h" />
     <ClInclude Include="Direct3DBase.h" />
     <ClInclude Include="Direct3DContentProvider.h">
       <DeploymentContent>true</DeploymentContent>

@@ -21,7 +21,7 @@ namespace PhoneDirect3DXamlAppInterop
         /// 提供对电话应用程序的根框架的轻松访问。
         /// </summary>
         /// <returns>电话应用程序的根框架。</returns>
-        public PhoneApplicationFrame RootFrame { get; private set; }
+        public static PhoneApplicationFrame RootFrame { get; private set; }
 
         /// <summary>
         /// Application 对象的构造函数。

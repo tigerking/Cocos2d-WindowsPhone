@@ -504,7 +504,6 @@
     <ClCompile Include="Classes\HelloWorldScene.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="CubeRenderer.cpp" />
     <ClCompile Include="Direct3DBase.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -866,7 +865,6 @@
     <ClInclude Include="Classes\HelloWorldScene.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="CubeRenderer.h" />
     <ClInclude Include="Direct3DBase.h" />
   </ItemGroup>
   <ItemGroup>

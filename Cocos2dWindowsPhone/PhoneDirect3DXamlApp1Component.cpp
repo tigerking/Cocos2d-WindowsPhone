@@ -76,8 +76,8 @@ HRESULT Direct3DInterop::Connect(_In_ IDrawingSurfaceRuntimeHostNative* host)
 	m_renderer->Initialize();
 	m_renderer->UpdateForWindowSizeChange(WindowBounds.Width, WindowBounds.Height);
 
-	app.initInstance();
-	app.applicationDidFinishLaunching();
+	//app.initInstance();
+	//app.applicationDidFinishLaunching();
 
 
 

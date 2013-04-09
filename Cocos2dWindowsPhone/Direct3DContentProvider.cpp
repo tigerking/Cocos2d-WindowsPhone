@@ -13,6 +13,14 @@ Direct3DContentProvider::Direct3DContentProvider(Direct3DInterop^ controller) :
 				m_host->RequestAdditionalFrame();
 			}
 		});
+
+	m_controller->RecreateSynchronizedTexture += ref new RecreateSynchronizedTextureHandler([=] ()
+		{
+			if (m_host)
+			{
+				m_host->CreateSynchronizedTexture(m_controller->GetTexture(), &m_synchronizedTexture);
+			}
+		});
 }
 
 // IDrawingSurfaceContentProviderNative ½Ó¿Ú
@@ -27,6 +35,7 @@ void Direct3DContentProvider::Disconnect()
 {
 	m_controller->Disconnect();
 	m_host = nullptr;
+	m_synchronizedTexture = nullptr;
 }
 HRESULT Direct3DContentProvider::PrepareResources(_In_ const LARGE_INTEGER* presentTargetTime, _Out_ BOOL* contentDirty)
 {

@@ -57,11 +57,10 @@ static CCPoint getCCPointFromScreen(Point point)
 static DirectXRender^ s_pDXRender;
 
 // Constructor.
-DirectXRender::DirectXRender()
-	: m_dpi(-1.0f)
-	, m_windowClosed(true)
+DirectXRender::DirectXRender():
+	m_loadingComplete(false),
+	m_indexCount(0)
 {
-	s_pDXRender = this;
 }
 
 void DirectXRender::Initialize()
