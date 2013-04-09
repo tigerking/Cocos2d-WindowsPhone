@@ -16,8 +16,8 @@ namespace PhoneDirect3DXamlAppInterop
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private Direct3DBackground m_d3dBackground = new Direct3DBackground();
-
+        private Direct3DInterop m_d3dBackground = new Direct3DInterop();
+        private object m_d3dContentProvider = null;
         // 构造函数
         public MainPage()
         {
@@ -41,11 +41,11 @@ namespace PhoneDirect3DXamlAppInterop
             // Set render resolution to the full native resolution
             m_d3dBackground.RenderResolution = m_d3dBackground.NativeResolution;
 
-
-            Windows.Phone.Graphics.Interop.IDrawingSurfaceBackgroundContentProvider pProvider = m_d3dBackground.CreateContentProvider();
-
+            // Hook-up native component to DrawingSurface
+            if (m_d3dContentProvider == null)
+                m_d3dContentProvider = m_d3dBackground.CreateContentProvider();
             // Hook-up native component to DrawingSurfaceBackgroundGrid
-            DrawingSurfaceBackground.SetBackgroundContentProvider(pProvider);
+            DrawingSurfaceBackground.SetBackgroundContentProvider(m_d3dContentProvider);
             DrawingSurfaceBackground.SetBackgroundManipulationHandler(m_d3dBackground);
         }
     }

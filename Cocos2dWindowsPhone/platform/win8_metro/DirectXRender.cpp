@@ -63,46 +63,65 @@ DirectXRender::DirectXRender()
 {
 	s_pDXRender = this;
 }
-void DirectXRender::Initialize(_In_ ID3D11Device1* device)
+
+void DirectXRender::Initialize()
 {
-	m_d3dDevice = device;
 	CreateDeviceResources();
 }
-// Initialize the Direct3D resources required to run.
-//void DirectXRender::Initialize(CoreWindow^ window, float dpi)
-//{
-//	m_window = window;
-//	m_windowClosed = false;
-//	m_textPainter = ref new TextPainter();
-//
-//	window->Closed += 
-//		ref new TypedEventHandler<CoreWindow^, CoreWindowEventArgs^>(this, &DirectXRender::OnWindowClosed);
-//
-//	window->VisibilityChanged +=
-//		ref new TypedEventHandler<CoreWindow^, VisibilityChangedEventArgs^>(this, &DirectXRender::OnWindowVisibilityChanged);
-//
-//	window->SizeChanged += 
-//		ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &DirectXRender::OnWindowSizeChanged);
-//
-//	window->PointerPressed += 
-//		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &DirectXRender::OnPointerPressed);
-//
-//	window->PointerReleased +=
-//		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &DirectXRender::OnPointerReleased);
-//
-//	window->PointerMoved +=
-//		ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &DirectXRender::OnPointerMoved);
-//
-//	window->CharacterReceived += 
-//		ref new TypedEventHandler<CoreWindow^, CharacterReceivedEventArgs^>(this, &DirectXRender::OnCharacterReceived);
-//	 
-//	CreateDeviceIndependentResources();
-//	CreateDeviceResources();
-//	SetDpi(dpi);
-//	SetRasterState();
-//	//Render();
-//	//Present();
-//}
+
+
+// These are the resources that depend on the device.
+void DirectXRender::CreateDeviceResources()
+{
+	// This flag adds support for surfaces with a different color channel ordering
+	// than the API default. It is required for compatibility with Direct2D.
+	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+
+#if defined(_DEBUG)
+	// If the project is in a debug build, enable debugging via SDK Layers with this flag.
+	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
+	// This array defines the set of DirectX hardware feature levels this app will support.
+	// Note the ordering should be preserved.
+	// Don't forget to declare your application's minimum required feature level in its
+	// description.  All applications are assumed to support 9.1 unless otherwise stated.
+	D3D_FEATURE_LEVEL featureLevels[] = 
+	{
+		D3D_FEATURE_LEVEL_11_1,
+		D3D_FEATURE_LEVEL_11_0,
+		D3D_FEATURE_LEVEL_10_1,
+		D3D_FEATURE_LEVEL_10_0,
+		D3D_FEATURE_LEVEL_9_3
+	};
+
+	// Create the Direct3D 11 API device object and a corresponding context.
+	ComPtr<ID3D11Device> device;
+	ComPtr<ID3D11DeviceContext> context;
+	DX::ThrowIfFailed(
+		D3D11CreateDevice(
+			nullptr, // Specify nullptr to use the default adapter.
+			D3D_DRIVER_TYPE_HARDWARE,
+			nullptr,
+			creationFlags, // Set set debug and Direct2D compatibility flags.
+			featureLevels, // List of feature levels this app can support.
+			ARRAYSIZE(featureLevels),
+			D3D11_SDK_VERSION, // Always set this to D3D11_SDK_VERSION.
+			&device, // Returns the Direct3D device created.
+			&m_featureLevel, // Returns feature level of device created.
+			&context // Returns the device immediate context.
+			)
+		);
+
+	// Get the Direct3D 11.1 API device and context interfaces.
+	DX::ThrowIfFailed(
+		device.As(&m_d3dDevice)
+		);
+
+	DX::ThrowIfFailed(
+		context.As(&m_d3dContext)
+		);
+}
 
 // These are the resources required independent of hardware.
 
@@ -146,131 +165,6 @@ void DirectXRender::CreateDeviceIndependentResources()
 #endif
 }
 
-// These are the resources that depend on the device.
-void DirectXRender::CreateDeviceResources()
-{
-//	// This flag adds support for surfaces with a different color channel ordering than the API default.
-//	// It is recommended usage, and is required for compatibility with Direct2D.
-//	UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
-//	ComPtr<IDXGIDevice> dxgiDevice;
-//
-//#if defined(_DEBUG)
-//	// If the project is in a debug build, enable debugging via SDK Layers with this flag.
-//	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
-//#endif
-//
-//	// This array defines the set of DirectX hardware feature levels this app will support.
-//	// Note the ordering should be preserved.
-//	// Don't forget to declare your application's minimum required feature level in its
-//	// description.  All applications are assumed to support 9.1 unless otherwise stated.
-//	D3D_FEATURE_LEVEL featureLevels[] = 
-//	{
-//#if WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP
-//		D3D_FEATURE_LEVEL_9_3,
-//		D3D_FEATURE_LEVEL_9_2,
-//		D3D_FEATURE_LEVEL_9_1
-//#else
-//		D3D_FEATURE_LEVEL_11_1,
-//		D3D_FEATURE_LEVEL_11_0,
-//		D3D_FEATURE_LEVEL_10_1,
-//		D3D_FEATURE_LEVEL_10_0,
-//		D3D_FEATURE_LEVEL_9_3,
-//		D3D_FEATURE_LEVEL_9_2,
-//		D3D_FEATURE_LEVEL_9_1
-//#endif
-//	};
-//
-//	// Create the DX11 API device object, and get a corresponding context.
-//	ComPtr<ID3D11Device> device;
-//	ComPtr<ID3D11DeviceContext> context;
-//
-//#if WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP
-//	DX::ThrowIfFailed(D3D11CreateDevice(
-//		nullptr,                   // specify null to use the default adapter
-//		D3D_DRIVER_TYPE_HARDWARE,
-//		nullptr,                          // leave as 0 unless software device
-//		creationFlags,              // optionally set debug and Direct2D compatibility flags
-//		featureLevels,              // list of feature levels this app can support
-//		ARRAYSIZE(featureLevels),   // number of entries in above list
-//		D3D11_SDK_VERSION,          // always set this to D3D11_SDK_VERSION for Metro style apps
-//		&device,                    // returns the Direct3D device created
-//		&m_featureLevel,            // returns feature level of device created
-//		&context                    // returns the device immediate context
-//		));
-//#else
-//	ComPtr<IDXGIFactory> factory;
-//	DX::ThrowIfFailed(CreateDXGIFactory1(__uuidof(IDXGIFactory2), (void**)(&factory)));
-//
-//	// find a video card support the feature we need
-//	UINT i = 0;
-//
-//	ComPtr<IDXGIAdapter> adapter;
-//
-//	while (factory->EnumAdapters(i, &adapter) != DXGI_ERROR_NOT_FOUND)
-//	{
-//		DX::ThrowIfFailed(D3D11CreateDevice(
-//			nullptr,                   // specify null to use the default adapter
-//			D3D_DRIVER_TYPE_HARDWARE,
-//			nullptr,                          // leave as 0 unless software device
-//			creationFlags,              // optionally set debug and Direct2D compatibility flags
-//			featureLevels,              // list of feature levels this app can support
-//			ARRAYSIZE(featureLevels),   // number of entries in above list
-//			D3D11_SDK_VERSION,          // always set this to D3D11_SDK_VERSION for Metro style apps
-//			&device,                    // returns the Direct3D device created
-//			&m_featureLevel,            // returns feature level of device created
-//			&context                    // returns the device immediate context
-//			));
-//		// if this video card is supported by dx11, use this one
-//		if (m_featureLevel >= D3D_FEATURE_LEVEL_11_0)
-//			break;
-//		++i;
-//	}
-//#endif
-
-//	//if (m_featureLevel < D3D_FEATURE_LEVEL_11_0)
-//	//	throw ref new Platform::COMException(kCCExceptionNoSupportDX11);
-//
-//	// Get the DirectX11.1 device by QI off the DirectX11 one.
-//	DX::ThrowIfFailed(
-//		device.As(&m_d3dDevice)
-//		);
-//
-//	// And get the corresponding device context in the same way.
-//	DX::ThrowIfFailed(
-//		context.As(&m_d3dContext)
-//		);
-//
-//	// Obtain the underlying DXGI device of the Direct3D11.1 device.
-//	DX::ThrowIfFailed(
-//		m_d3dDevice.As(&dxgiDevice)
-//		);
-//
-//#if WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP
-//#else
-//	// Obtain the Direct2D device for 2-D rendering.
-//	DX::ThrowIfFailed(
-//		m_d2dFactory->CreateDevice(dxgiDevice.Get(), &m_d2dDevice)
-//		);
-//
-//	// And get its corresponding device context object.
-//	DX::ThrowIfFailed(
-//		m_d2dDevice->CreateDeviceContext(
-//		D2D1_DEVICE_CONTEXT_OPTIONS_NONE,
-//		&m_d2dContext
-//		)
-//		);
-//
-//	//Init textPainter
-//	m_textPainter->Initialize(
-//		m_d2dContext.Get(),
-//		m_wicFactory.Get(),
-//		m_dwriteFactory.Get()
-//		);
-//#endif
-//	// Release the swap chain (if it exists) as it will be incompatible with
-//	// the new device.
-//	m_swapChain = nullptr;
-}
 
 //// Helps track the DPI in the helper class.
 //// This is called in the dpiChanged event handler in the view class.
@@ -304,7 +198,35 @@ void DirectXRender::UpdateForWindowSizeChange(float width, float height)
 // Allocate all memory resources that change on a window SizeChanged event.
 void DirectXRender::CreateWindowSizeDependentResources()
 {
-	// 创建深度模具视图。
+	// Create a descriptor for the render target buffer.
+	CD3D11_TEXTURE2D_DESC renderTargetDesc(
+		DXGI_FORMAT_B8G8R8A8_UNORM,
+		static_cast<UINT>(m_renderTargetSize.Width),
+		static_cast<UINT>(m_renderTargetSize.Height),
+		1,
+		1,
+		D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE
+		);
+	renderTargetDesc.MiscFlags = D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX | D3D11_RESOURCE_MISC_SHARED_NTHANDLE;
+
+	// Allocate a 2-D surface as the render target buffer.
+	DX::ThrowIfFailed(
+		m_d3dDevice->CreateTexture2D(
+			&renderTargetDesc,
+			nullptr,
+			&m_renderTarget
+			)
+		);
+
+	DX::ThrowIfFailed(
+		m_d3dDevice->CreateRenderTargetView(
+			m_renderTarget.Get(),
+			nullptr,
+			&m_renderTargetView
+			)
+		);
+
+	// Create a depth stencil view.
 	CD3D11_TEXTURE2D_DESC depthStencilDesc(
 		DXGI_FORMAT_D24_UNORM_S8_UINT,
 		static_cast<UINT>(m_renderTargetSize.Width),
@@ -331,6 +253,16 @@ void DirectXRender::CreateWindowSizeDependentResources()
 			&m_depthStencilView
 			)
 		);
+
+	// Set the rendering viewport to target the entire window.
+	CD3D11_VIEWPORT viewport(
+		0.0f,
+		0.0f,
+		m_renderTargetSize.Width,
+		m_renderTargetSize.Height
+		);
+
+	m_d3dContext->RSSetViewports(1, &viewport);
 }
 
 // Method to call cocos2d's main loop for game update and draw.
@@ -348,7 +280,7 @@ float DirectXRender::GetWindowsHeight()
 	return m_windowBounds.Height;
 }
 
-
+//
 //// Method to deliver the final image to the display.
 //void DirectXRender::Present()
 //{
@@ -361,19 +293,32 @@ float DirectXRender::GetWindowsHeight()
 //	// to sleep until the next VSync. This ensures we don't waste any cycles rendering
 //	// frames that will never be displayed to the screen.
 //	// We 
-//	HRESULT hr = m_swapChain->Present(1, 0);
-//
-//	// If the device was removed either by a disconnect or a driver upgrade, we 
-//	// must completely reinitialize the renderer.
-//	if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
-//	{
-////		Initialize(m_window.Get(), m_dpi);
-//	}
-//	else
-//	{
-//		DX::ThrowIfFailed(hr);
-//	}
+////	HRESULT hr = m_swapChain->Present(1, 0);
+////
+////	// If the device was removed either by a disconnect or a driver upgrade, we 
+////	// must completely reinitialize the renderer.
+////	if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
+////	{
+//////		Initialize(m_window.Get(), m_dpi);
+////	}
+////	else
+////	{
+////		DX::ThrowIfFailed(hr);
+////	}
 //}
+void DirectXRender::UpdateForRenderResolutionChange(float width, float height)
+{
+	m_renderTargetSize.Width = width;
+	m_renderTargetSize.Height = height;
+
+	ID3D11RenderTargetView* nullViews[] = {nullptr};
+	m_d3dContext->OMSetRenderTargets(ARRAYSIZE(nullViews), nullViews, nullptr);
+	m_renderTarget = nullptr;
+	m_renderTargetView = nullptr;
+	m_depthStencilView = nullptr;
+	m_d3dContext->Flush();
+	CreateWindowSizeDependentResources();
+}
 
 void DirectXRender::SetBackBufferRenderTarget()
 {
@@ -507,48 +452,48 @@ DirectXRender^ DirectXRender::SharedDXRender()
 //{
 //}
 
-void DirectXRender::UpdateDevice(_In_ ID3D11Device1* device, _In_ ID3D11DeviceContext1* context, _In_ ID3D11RenderTargetView* renderTargetView)
-{
-	m_d3dContext = context;
-	m_renderTargetView = renderTargetView;
-
-	if (m_d3dDevice.Get() != device)
-	{
-		m_d3dDevice = device;
-		CreateDeviceResources();
-
-		// Force call to CreateWindowSizeDependentResources.
-		m_renderTargetSize.Width  = -1;
-		m_renderTargetSize.Height = -1;
-	}
-
-	ComPtr<ID3D11Resource> renderTargetViewResource;
-	m_renderTargetView->GetResource(&renderTargetViewResource);
-
-	ComPtr<ID3D11Texture2D> backBuffer;
-	DX::ThrowIfFailed(
-		renderTargetViewResource.As(&backBuffer)
-		);
-
-	// 在我们的帮助程序类中缓存呈现目标维度以方便使用。
-    D3D11_TEXTURE2D_DESC backBufferDesc;
-    backBuffer->GetDesc(&backBufferDesc);
-
-    if (m_renderTargetSize.Width  != static_cast<float>(backBufferDesc.Width) ||
-        m_renderTargetSize.Height != static_cast<float>(backBufferDesc.Height))
-    {
-        m_renderTargetSize.Width  = static_cast<float>(backBufferDesc.Width);
-        m_renderTargetSize.Height = static_cast<float>(backBufferDesc.Height);
-        CreateWindowSizeDependentResources();
-    }
-
-	// 设置用于确定整个窗口的呈现视区。
-	CD3D11_VIEWPORT viewport(
-		0.0f,
-		0.0f,
-		m_renderTargetSize.Width,
-		m_renderTargetSize.Height
-		);
-
-	m_d3dContext->RSSetViewports(1, &viewport);
-}
+//void DirectXRender::UpdateDevice(_In_ ID3D11Device1* device, _In_ ID3D11DeviceContext1* context, _In_ ID3D11RenderTargetView* renderTargetView)
+//{
+//	m_d3dContext = context;
+//	m_renderTargetView = renderTargetView;
+//
+//	if (m_d3dDevice.Get() != device)
+//	{
+//		m_d3dDevice = device;
+//		CreateDeviceResources();
+//
+//		// Force call to CreateWindowSizeDependentResources.
+//		m_renderTargetSize.Width  = -1;
+//		m_renderTargetSize.Height = -1;
+//	}
+//
+//	ComPtr<ID3D11Resource> renderTargetViewResource;
+//	m_renderTargetView->GetResource(&renderTargetViewResource);
+//
+//	ComPtr<ID3D11Texture2D> backBuffer;
+//	DX::ThrowIfFailed(
+//		renderTargetViewResource.As(&backBuffer)
+//		);
+//
+//	// 在我们的帮助程序类中缓存呈现目标维度以方便使用。
+//    D3D11_TEXTURE2D_DESC backBufferDesc;
+//    backBuffer->GetDesc(&backBufferDesc);
+//
+//    if (m_renderTargetSize.Width  != static_cast<float>(backBufferDesc.Width) ||
+//        m_renderTargetSize.Height != static_cast<float>(backBufferDesc.Height))
+//    {
+//        m_renderTargetSize.Width  = static_cast<float>(backBufferDesc.Width);
+//        m_renderTargetSize.Height = static_cast<float>(backBufferDesc.Height);
+//        CreateWindowSizeDependentResources();
+//    }
+//
+//	// 设置用于确定整个窗口的呈现视区。
+//	CD3D11_VIEWPORT viewport(
+//		0.0f,
+//		0.0f,
+//		m_renderTargetSize.Width,
+//		m_renderTargetSize.Height
+//		);
+//
+//	m_d3dContext->RSSetViewports(1, &viewport);
+//}

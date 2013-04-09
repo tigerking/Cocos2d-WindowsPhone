@@ -64,6 +64,9 @@ public:
 	void CreateDeviceResources();
 	//void SetDpi(float dpi);
 	void UpdateForWindowSizeChange(float width, float height);
+
+
+	void UpdateForRenderResolutionChange(float width, float height);
 	void CreateWindowSizeDependentResources();
 	void Render();
 	//void Present();
@@ -76,10 +79,15 @@ public:
 
 	// 更新时间相关对象的方法。
 	//void Update(float timeTotal, float timeDelta);
+
 internal:
-	virtual void Initialize(_In_ ID3D11Device1* device);
+	void Initialize();
 	//virtual void CreateDeviceResources();
-	virtual void UpdateDevice(_In_ ID3D11Device1* device, _In_ ID3D11DeviceContext1* context, _In_ ID3D11RenderTargetView* renderTargetView);
+	//virtual void UpdateDevice(_In_ ID3D11Device1* device, _In_ ID3D11DeviceContext1* context, _In_ ID3D11RenderTargetView* renderTargetView);
+		ID3D11Texture2D* GetTexture()
+	{
+		return m_renderTarget.Get();
+	}
 private:
 	//Platform::Agile<Windows::UI::Core::CoreWindow>                  m_window;
 	bool m_loadingComplete;
@@ -119,7 +127,8 @@ private:
 	// Direct3D Objects
 	Microsoft::WRL::ComPtr<ID3D11Device1>           m_d3dDevice;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext1>    m_d3dContext;
-	Microsoft::WRL::ComPtr<IDXGISwapChain1>         m_swapChain;
+//	Microsoft::WRL::ComPtr<IDXGISwapChain1>         m_swapChain;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_renderTarget;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView>  m_renderTargetView;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>  m_depthStencilView;
 
@@ -127,7 +136,6 @@ private:
 	Windows::Foundation::Size                       m_renderTargetSize;
 	Windows::Foundation::Rect                       m_windowBounds;
 	float                                           m_dpi;
-
 
 	bool m_windowClosed;
 

@@ -80,11 +80,12 @@ bool HelloWorld::init()
 
 		////this->resetGame();
 		////start = true;
-		////CCSize size = CCDirector::sharedDirector()->getWinSize();
-		//CCSprite *b = CCSprite::create("HelloWorld.png");
-		//b->setPosition(ccp(0, 0));
+		//CCSize size = CCDirector::sharedDirector()->getWinSize();
+		CCSprite *b = CCSprite::create("HelloWorld.png");
+		b->setPosition(ccp(240, 400));
 		//b->setPosition(ccp(size.width * 0.5, size.height * 0.5));
-		//this->addChild(b);
+
+		this->addChild(b);
 
 		//setTouchEnabled(true);
 
