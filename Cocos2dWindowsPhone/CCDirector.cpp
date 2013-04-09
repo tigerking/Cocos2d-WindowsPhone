@@ -241,8 +241,8 @@ void CCDirector::drawScene(void)
 	// render and swap buffers
 	if (m_pobOpenGLView)
     {
-		//m_pobOpenGLView->render();
-        m_pobOpenGLView->swapBuffers();
+		m_pobOpenGLView->render();
+        //m_pobOpenGLView->swapBuffers();
     }
 }
 

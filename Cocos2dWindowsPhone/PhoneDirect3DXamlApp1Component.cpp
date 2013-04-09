@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PhoneDirect3DXamlApp1Component.h"
 #include "Direct3DContentProvider.h"
+#include "Classes/AppDelegate.h"
 
 using namespace Windows::Foundation;
 using namespace Windows::UI::Core;
@@ -10,6 +11,8 @@ using namespace Windows::Phone::Input::Interop;
 
 namespace cocos2d
 {
+
+AppDelegate app;
 
 Direct3DBackground::Direct3DBackground() :
 	m_timer(ref new BasicTimer())
@@ -56,11 +59,13 @@ HRESULT Direct3DBackground::Connect(_In_ IDrawingSurfaceRuntimeHostNative* host,
 {
 	m_renderer = ref new cocos2d::DirectXRender();
 	m_renderer->Initialize(device);
-//	m_renderer->UpdateForWindowSizeChange(WindowBounds.Width, WindowBounds.Height);
-	m_renderer->UpdateForWindowSizeChange();
+	m_renderer->UpdateForWindowSizeChange(WindowBounds.Width, WindowBounds.Height);
 
-	// 在呈现器完成初始化后重新启动计时器。
-	m_timer->Reset();
+
+
+
+	//// 在呈现器完成初始化后重新启动计时器。
+	//m_timer->Reset();
 
 	return S_OK;
 }
@@ -84,6 +89,12 @@ HRESULT Direct3DBackground::PrepareResources(_In_ const LARGE_INTEGER* presentTa
 HRESULT Direct3DBackground::Draw(_In_ ID3D11Device1* device, _In_ ID3D11DeviceContext1* context, _In_ ID3D11RenderTargetView* renderTargetView)
 {
 	m_renderer->UpdateDevice(device, context, renderTargetView);
+
+	
+		app.initInstance();
+		app.applicationDidFinishLaunching();
+
+
 	m_renderer->Render();
 
 	RequestAdditionalFrame();

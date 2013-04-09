@@ -189,11 +189,11 @@ void CCFrameworkView::Run()
 			}
 		}
 
-        // if windows closed exit app
-        if (true == m_renderer->GetWindowsClosedState())
-        {
-            break;
-        }
+        //// if windows closed exit app
+        //if (true == m_renderer->GetWindowsClosedState())
+        //{
+        //    break;
+        //}
 
         CoreWindow::GetForCurrentThread()->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessAllIfPresent);
 
@@ -274,7 +274,7 @@ void CCFrameworkView::OnLogicalDpiChanged(
     )
 {
     CCLog("CCFrameworkView::+OnLogicalDpiChanged()");
-    m_renderer->SetDpi(DisplayProperties::LogicalDpi);
+    //m_renderer->SetDpi(DisplayProperties::LogicalDpi);
     CCLog("CCFrameworkView::-OnLogicalDpiChanged()");
 }
 

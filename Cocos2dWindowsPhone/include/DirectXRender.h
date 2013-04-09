@@ -62,15 +62,17 @@ public:
 	//void Initialize(Windows::UI::Core::CoreWindow^ window, float dpi);
 	void CreateDeviceIndependentResources();
 	void CreateDeviceResources();
-	void SetDpi(float dpi);
-	void UpdateForWindowSizeChange();
+	//void SetDpi(float dpi);
+	void UpdateForWindowSizeChange(float width, float height);
 	void CreateWindowSizeDependentResources();
 	void Render();
-	void Present();
+	//void Present();
 	void SetBackBufferRenderTarget();
-	void CloseWindow();
-	bool GetWindowsClosedState();
+	//void CloseWindow();
+	//bool GetWindowsClosedState();
 	static DirectXRender^ SharedDXRender();
+	float GetWindowsWidth();
+	float GetWindowsHeight();
 
 	// 更新时间相关对象的方法。
 	//void Update(float timeTotal, float timeDelta);
@@ -79,7 +81,7 @@ internal:
 	//virtual void CreateDeviceResources();
 	virtual void UpdateDevice(_In_ ID3D11Device1* device, _In_ ID3D11DeviceContext1* context, _In_ ID3D11RenderTargetView* renderTargetView);
 private:
-	Platform::Agile<Windows::UI::Core::CoreWindow>                  m_window;
+	//Platform::Agile<Windows::UI::Core::CoreWindow>                  m_window;
 	bool m_loadingComplete;
 
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
@@ -129,41 +131,41 @@ private:
 
 	bool m_windowClosed;
 
-protected:
-	void OnWindowClosed(
-		_In_ Windows::UI::Core::CoreWindow^ sender,
-		_In_ Windows::UI::Core::CoreWindowEventArgs^ args
-		);
-
-	void OnWindowVisibilityChanged(
-		_In_ Windows::UI::Core::CoreWindow^ sender,
-		_In_ Windows::UI::Core::VisibilityChangedEventArgs^ args
-		);
-
-	void OnWindowSizeChanged(
-		_In_ Windows::UI::Core::CoreWindow^ sender,
-		_In_ Windows::UI::Core::WindowSizeChangedEventArgs^ args
-		);
-
-	void OnPointerPressed(
-		_In_ Windows::UI::Core::CoreWindow^ sender,
-		_In_ Windows::UI::Core::PointerEventArgs^ args
-		);
-
-	void OnPointerReleased(
-		_In_ Windows::UI::Core::CoreWindow^ sender,
-		_In_ Windows::UI::Core::PointerEventArgs^ args
-		);
-
-	void OnPointerMoved(
-		_In_ Windows::UI::Core::CoreWindow^ sender,
-		_In_ Windows::UI::Core::PointerEventArgs^ args
-		);
-
-	void OnCharacterReceived(
-		_In_ Windows::UI::Core::CoreWindow^ sender,
-		_In_ Windows::UI::Core::CharacterReceivedEventArgs^ args
-		);
-
+//protected:
+//	void OnWindowClosed(
+//		_In_ Windows::UI::Core::CoreWindow^ sender,
+//		_In_ Windows::UI::Core::CoreWindowEventArgs^ args
+//		);
+//
+//	void OnWindowVisibilityChanged(
+//		_In_ Windows::UI::Core::CoreWindow^ sender,
+//		_In_ Windows::UI::Core::VisibilityChangedEventArgs^ args
+//		);
+//
+//	void OnWindowSizeChanged(
+//		_In_ Windows::UI::Core::CoreWindow^ sender,
+//		_In_ Windows::UI::Core::WindowSizeChangedEventArgs^ args
+//		);
+//
+//	void OnPointerPressed(
+//		_In_ Windows::UI::Core::CoreWindow^ sender,
+//		_In_ Windows::UI::Core::PointerEventArgs^ args
+//		);
+//
+//	void OnPointerReleased(
+//		_In_ Windows::UI::Core::CoreWindow^ sender,
+//		_In_ Windows::UI::Core::PointerEventArgs^ args
+//		);
+//
+//	void OnPointerMoved(
+//		_In_ Windows::UI::Core::CoreWindow^ sender,
+//		_In_ Windows::UI::Core::PointerEventArgs^ args
+//		);
+//
+//	void OnCharacterReceived(
+//		_In_ Windows::UI::Core::CoreWindow^ sender,
+//		_In_ Windows::UI::Core::CharacterReceivedEventArgs^ args
+//		);
+//
 };
 NS_CC_END;
